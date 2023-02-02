@@ -10,7 +10,6 @@ with open('D:\i.json','w') as json_file:
     json_file.truncate(0)
 
 file.cwe()
-os.chdir("D:")
 a = []
 with open('D:\i.json') as json_file:
     data = json.load(json_file)
