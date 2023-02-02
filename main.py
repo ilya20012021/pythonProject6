@@ -1,8 +1,18 @@
 import json
 import webbrowser
+import os
+import pandas as pd
+from tabulate import tabulate
 
+import file
+os.chdir("D:")
+with open('D:\i.json','w') as json_file:
+    json_file.truncate(0)
+
+file.cwe()
+os.chdir("D:")
 a = []
-with open('2.json') as json_file:
+with open('D:\i.json') as json_file:
     data = json.load(json_file)
     d = data["results"]
     d = list(d)
@@ -14,24 +24,20 @@ with open('2.json') as json_file:
 
 b = set(a)
 c = list(b)
-print("Идентификаторы уязвимостей")
+num = [int(i) for i in range(len(c))]
+site = []
 for i in c:
-    print(i)
+    site.append(f"https://cwe.mitre.org/data/definitions/{i}.html")
 
-ans = ["да", "нет"]
-ans_n = "/".join(ans)
-print(f"Хотите ли вы узнать информацию о какой-нибудь уязвимости? {ans_n}")
-s = str(input())
-if (s == "да"):
-    n = str(input("Введите идентификатор уязвимости для поиска информации:"))
-    if (n.isdigit()):
-        n = int(n)
-        if(n in c):
-            webbrowser.open(f"https://cwe.mitre.org/data/definitions/{n}.html")
-    else:
-        print("Такой уязвимости нет!")
-elif (s == "нет"):
-    print("ОК!")
-else:
-    print("???????")
-print("Спасибо, что выбрали меня!")
+counters = []
+for i in c:
+    x = a.count(i)
+    counters.append(x)
+
+
+df = pd.DataFrame({})
+df["id"] = num
+df["cwe"] = c
+df["site"] = site
+df["counters"] = counters
+print(tabulate(df,headers="keys",tablefmt="psql"))
